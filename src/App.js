@@ -1,25 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { useRef, useEffect } from 'react';
 
-function App() {
+import './App.css';
+import Standby from './views/Standby';
+import Camera from './views/Camera';
+
+import { toggleCamera } from './store/slices/cameraSlice';
+import {
+  startCountdown,
+  decrementCount,
+  stopCountdown
+} from './store/slices/timerSlice';
+
+const App = () => {
+  const dispatch = useDispatch();
+  const isPhotographing = useSelector(state => state.camera.isPhotographing);
+  const count = useSelector(state => state.timer.count);
+  const isRunning = useSelector(state => state.timer.isRunning);
+
+  const countRef = useRef(count);
+
+  useEffect(() => {
+    countRef.current = count;
+  }, [count]);
+
+  useEffect(() => {
+    if (isRunning) {
+      const countdownInterval = setInterval(() => {
+        const currentCount = countRef.current;
+        dispatch(decrementCount());
+        if (currentCount <= 1) {
+          clearInterval(countdownInterval);
+          dispatch(stopCountdown());
+        }
+      }, 1400);
+      return () => {
+        clearInterval(countdownInterval);
+      };
+    }
+  }, [dispatch, isRunning]);
+
+  const handleClick = () => {
+    dispatch(toggleCamera());
+    setTimeout(() => {
+      dispatch(startCountdown());
+    }, 2000)
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App' onClick={handleClick}> {/* Temporary countdown trigger */}
+      {!isPhotographing ? <Standby /> : <Camera />}
     </div>
   );
-}
+};
 
 export default App;

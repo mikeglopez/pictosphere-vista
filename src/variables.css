@@ -1,0 +1,38 @@
+/*
+  Custom Properties are not compatible with
+  Sass Lighten/Darken methods nor rgba (as of 5/20/21)
+
+  Colors for lighten/darken are added as variables
+  with '-{lighten/darken}-{percentage}' appended
+
+  Colors for rgba (allows for transparency) are
+  added as variables with a prefix of 'rgb-'
+*/
+
+:root {
+  /* Brand Colors */
+  --oatmeal: #c5c2b9;
+  --charcoal: #201f1e;
+  --dark-sage: #599c76;
+
+  --oatmeal-lighter:  color-mix(in srgb,var(--oatmeal),#fff 75%);
+
+  /* Text */
+  /* --body-text: #32414E;
+  --footer-text: #9ccff3; */
+
+  /* Alerts */
+  /* --success-green: #45b300;
+  --alert-red: #b30100;
+  --alert-red-darker-5: #9a0100; */
+
+  /* Contrast */
+  --white: #fff;
+  --black: #000;
+
+  /* Box Shadows */
+  /* --box-shadow: 0 2px 4px 0 rgba(0,0,0,0.20);
+  --box-shadow-upward: inset 0 1px 0 rgba(--white, .15), 2px 0 5px rgba(--black, .075);
+  --border-box-radius: 4px;
+  --border-btn-radius: 99px; */
+  }
