@@ -4,6 +4,7 @@ export const timerSlice = createSlice({
   name: 'timer',
   initialState: {
     isRunning: false,
+    hasRun: false,
     count: 0
   },
   reducers: {
@@ -20,10 +21,16 @@ export const timerSlice = createSlice({
     },
     stopCountdown: state => {
       state.isRunning = false;
+      state.hasRun = true;
+    },
+    resetCountdown: state => {
+      state.isRunning = false;
+      state.hasRun = false;
+      state.count = 0;
     }
   }
 });
 
-export const { startCountdown, decrementCount, stopCountdown } = timerSlice.actions;
+export const { startCountdown, decrementCount, stopCountdown, resetCountdown } = timerSlice.actions;
 
 export default timerSlice.reducer;

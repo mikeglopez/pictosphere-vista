@@ -1,13 +1,15 @@
 import Webcam from 'react-webcam';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { toggleCamera } from '../../store/slices/cameraSlice';
+import { resetCountdown } from '../../store/slices/timerSlice';
 
 const CustomWebcam = () => {
   const [image, setImage] = useState(null);
   // const [processedImage, setProcessedImage] = useState(null);
+  const { count, hasRun } = useSelector(state => state.timer);
 
   const dispatch = useDispatch();
 
@@ -26,22 +28,32 @@ const CustomWebcam = () => {
 
   useEffect(() => {
     if (image) {
-      processImage(image) // Save the captured image and enhance, if toggled true
+      processImage(image); // Save the captured image and enhance, if toggled true
 
       setTimeout(() => {
         setImage(null);
-        dispatch(toggleCamera())
-      }, (displayImageTime * 1000)) // Delete the image and return to standby after displayImageTime in milliseconds
+        dispatch(resetCountdown());
+        dispatch(toggleCamera());
+      }, (displayImageTime * 1000)); // Delete the image and return to standby after displayImageTime in milliseconds
     }
-  }, [ image, dispatch ])
+  }, [ image, dispatch ]);
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
   }, [webcamRef]);
 
+  useEffect(() => {
+    if (count < 1 && hasRun) {
+      setTimeout(() => {
+        capture()
+      }, 160)
+      new Audio('/assets/audio/camera-flash.mp3').play()
+    }
+  }, [count, hasRun, capture])
+
   return (
-    <div className='webcam' onClick={capture}>{/* Temporary capture trigger */}
+    <div className='webcam'>
       {image ? (
         <img src={image} alt='webcam' />
       ) : (
