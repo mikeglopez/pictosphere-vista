@@ -26,6 +26,7 @@ const CustomWebcam = () => {
     // setProcessedImage(response.data) // *: Maybe use this later to build the photo gallery
   }
 
+  // Take the picture and return to Standby
   useEffect(() => {
     if (image) {
       processImage(image); // Save the captured image and enhance, if toggled true
@@ -38,11 +39,13 @@ const CustomWebcam = () => {
     }
   }, [ image, dispatch ]);
 
+  // Capture the photo
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
   }, [webcamRef]);
 
+  // Play camera flash sound effect at the end of the countdown
   useEffect(() => {
     if (count < 1 && hasRun) {
       setTimeout(() => {
