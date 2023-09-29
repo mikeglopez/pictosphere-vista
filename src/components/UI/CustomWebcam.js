@@ -48,11 +48,21 @@ const CustomWebcam = () => {
   // Play camera flash sound effect at the end of the countdown
   useEffect(() => {
     if (count < 1 && hasRun) {
-      dispatch(toggleFlashing(count))
-      setTimeout(() => {
-        capture()
-      }, 160)
-      new Audio('/assets/audio/camera-flash.mp3').play()
+      // Choose from pre-generated capture phrases
+      const capturePhraseFile = Math.ceil(Math.random() * 4);
+      const capturePhrase = new Audio(`/assets/audio/assistant/capture-phrases/capture-phrase-${capturePhraseFile}.mp3`);
+
+      // TODO: Add chatgpt and elevenlabs generated capture phrase and toggle trigger for offline use
+
+      capturePhrase.addEventListener('ended', () => {
+        dispatch(toggleFlashing(count));
+        setTimeout(() => {
+          capture();
+          new Audio('/assets/audio/camera-flash.mp3').play();
+        }, 160);
+      });
+
+      capturePhrase.play();
     }
   }, [count, hasRun, capture, dispatch])
 
