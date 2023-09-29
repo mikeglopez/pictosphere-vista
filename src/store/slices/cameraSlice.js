@@ -10,7 +10,7 @@ export const cameraSlice = createSlice({
     toggleCamera: (state) => {
       state.isPhotographing = !state.isPhotographing;
     },
-    toggleFlashing: (state, action) => {
+    toggleFlashing: (state) => {
       state.isFlashing = !state.isFlashing;
     }
   }

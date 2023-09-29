@@ -55,7 +55,7 @@ const CustomWebcam = () => {
       // TODO: Add chatgpt and elevenlabs generated capture phrase and toggle trigger for offline use
 
       capturePhrase.addEventListener('ended', () => {
-        dispatch(toggleFlashing(count));
+        dispatch(toggleFlashing());
         setTimeout(() => {
           capture();
           new Audio('/assets/audio/camera-flash.mp3').play();
