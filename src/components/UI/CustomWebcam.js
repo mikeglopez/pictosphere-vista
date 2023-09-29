@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { toggleCamera } from '../../store/slices/cameraSlice';
+import { toggleCamera, toggleFlashing } from '../../store/slices/cameraSlice';
 import { resetCountdown } from '../../store/slices/timerSlice';
 
 const CustomWebcam = () => {
@@ -48,12 +48,13 @@ const CustomWebcam = () => {
   // Play camera flash sound effect at the end of the countdown
   useEffect(() => {
     if (count < 1 && hasRun) {
+      dispatch(toggleFlashing(count))
       setTimeout(() => {
         capture()
       }, 160)
       new Audio('/assets/audio/camera-flash.mp3').play()
     }
-  }, [count, hasRun, capture])
+  }, [count, hasRun, capture, dispatch])
 
   return (
     <div className='webcam'>
