@@ -1,3 +1,5 @@
+import WakeWordDetection from "../components/voice/WakeWordDetection";
+
 const Standby = () => {
   return (
     <div className='standby-container'>
@@ -5,6 +7,7 @@ const Standby = () => {
       <br />
       <br />
       to take a photo!</h1>
+      <WakeWordDetection />
     </div>
   );
 };

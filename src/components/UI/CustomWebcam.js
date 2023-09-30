@@ -47,6 +47,7 @@ const CustomWebcam = () => {
 
   // Play camera flash sound effect at the end of the countdown
   useEffect(() => {
+    // TODO: Flash and Flash SFX are sometimes not playing at the right time on subsequent captures
     if (count < 1 && hasRun) {
       // Choose from pre-generated capture phrases
       const capturePhraseFile = Math.ceil(Math.random() * 4);
