@@ -1,18 +1,28 @@
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
+import Assistant from './Assistant';
 import Countdown from './Countdown';
 
 const CameraOverlays = () => {
-  const count = useSelector(state => state.timer.count);
-  // TODO: Add another var to timerSlice to track if countdown has run
-  // *: If count is zero and countdown has run display Assistant/play say cheese message (generate as soon as countdown starts so it's ready)
-  // *: Probably need to reset store after successful capture
-  // *: Refactor the flash: Play audio, make sure it finishes before flashing?? -> 5, 4, 3, 2, 1 ..... 'say cheese'... if audio is done playing, flash/capture (with flash sfx?)
+  const [assistantHidden, setAssistantHidden] = useState(true)
+  const { count, hasRun } = useSelector(state => state.timer);
+  const { isFlashing } = useSelector(state => state.camera);
+
+  const countRef = useRef(count);
+
+  useEffect(() => {
+    countRef.current = count;
+    if (countRef.current >= 5 || countRef.current < 1) {
+      setAssistantHidden(isHidden => !isHidden);
+    }
+  }, [count]);
 
   return (
     <>
+      <Assistant hidden={assistantHidden} />
       {count > 0 && <Countdown />}
-      <div className={count === 0 ? 'flash' : ''} />
+      <div id='camera-flash' className={(count === 0 && hasRun && isFlashing) ? 'flash' : ''} />
     </>
   );
 };

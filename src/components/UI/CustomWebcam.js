@@ -1,13 +1,15 @@
 import Webcam from 'react-webcam';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { toggleCamera } from '../../store/slices/cameraSlice';
+import { toggleCamera, toggleFlashing } from '../../store/slices/cameraSlice';
+import { resetCountdown } from '../../store/slices/timerSlice';
 
 const CustomWebcam = () => {
   const [image, setImage] = useState(null);
   // const [processedImage, setProcessedImage] = useState(null);
+  const { count, hasRun } = useSelector(state => state.timer);
 
   const dispatch = useDispatch();
 
@@ -24,24 +26,48 @@ const CustomWebcam = () => {
     // setProcessedImage(response.data) // *: Maybe use this later to build the photo gallery
   }
 
+  // Take the picture and return to Standby
   useEffect(() => {
     if (image) {
-      processImage(image) // Save the captured image and enhance, if toggled true
+      processImage(image); // Save the captured image and enhance, if toggled true
 
       setTimeout(() => {
         setImage(null);
-        dispatch(toggleCamera())
-      }, (displayImageTime * 1000)) // Delete the image and return to standby after displayImageTime in milliseconds
+        dispatch(resetCountdown());
+        dispatch(toggleCamera());
+      }, (displayImageTime * 1000)); // Delete the image and return to standby after displayImageTime in milliseconds
     }
-  }, [ image, dispatch ])
+  }, [ image, dispatch ]);
 
+  // Capture the photo
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
   }, [webcamRef]);
 
+  // Play camera flash sound effect at the end of the countdown
+  useEffect(() => {
+    if (count < 1 && hasRun) {
+      // Choose from pre-generated capture phrases
+      const capturePhraseFile = Math.ceil(Math.random() * 4);
+      const capturePhrase = new Audio(`/assets/audio/assistant/capture-phrases/capture-phrase-${capturePhraseFile}.mp3`);
+
+      // TODO: Add chatgpt and elevenlabs generated capture phrase and toggle trigger for offline use
+
+      capturePhrase.addEventListener('ended', () => {
+        dispatch(toggleFlashing());
+        setTimeout(() => {
+          capture();
+          new Audio('/assets/audio/camera-flash.mp3').play();
+        }, 160);
+      });
+
+      capturePhrase.play();
+    }
+  }, [count, hasRun, capture, dispatch])
+
   return (
-    <div className='webcam' onClick={capture}>{/* Temporary capture trigger */}
+    <div className='webcam'>
       {image ? (
         <img src={image} alt='webcam' />
       ) : (

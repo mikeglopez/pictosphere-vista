@@ -22,8 +22,12 @@ const App = () => {
 
   useEffect(() => {
     countRef.current = count;
+    if (countRef.current > 0) {
+      new Audio(`/assets/audio/assistant/countdown/${countRef.current}.mp3`).play()
+    }
   }, [count]);
 
+  // Start the countdown
   useEffect(() => {
     if (isRunning) {
       const countdownInterval = setInterval(() => {
