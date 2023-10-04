@@ -112,6 +112,7 @@ html, .App {
   max-width: 100%;
   text-align: center;
   height: 100%;
+  border: 1rem solid #979797;
 }
 
 .webcam {
