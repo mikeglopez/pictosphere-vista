@@ -65,7 +65,7 @@ html, .App {
   transition: 1s;
 }
 
-.standby-container {
+.standby-background {
   position: fixed;
   top: 0;
   left: 0;
@@ -79,7 +79,15 @@ html, .App {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  filter: grayscale(100%);
+}
+
+.standby-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
 }
 
 .standby-text {
@@ -88,8 +96,23 @@ html, .App {
   font-size: 6rem;
   color: #979797;
   text-shadow: 0 0 6px #979797;
+  margin: .30em
 }
 /* 1280x720 Assistance Center Screen Resolution */
+
+.slideshow-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 40%;
+}
+
+.slideshow {
+  max-width: 100%;
+  text-align: center;
+  height: 100%;
+}
 
 .webcam {
   width: 100vw;
