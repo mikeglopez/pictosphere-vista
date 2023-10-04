@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const getImages = require('./helpers/get_images');
 const getCurrentDateTime = require('./helpers/date_formatter');
 const exportFile = require('./helpers/image_exporter');
 const reminiEnhance = require('./helpers/remini_enhance');
@@ -9,6 +10,15 @@ const app = express();
 const port = 5000;
 
 app.use(bodyParser.json({ limit: '10mb' }));
+
+app.get('/api/images', (req, res) => {
+  const imageDirectory = 'public/captures/original';
+  const imageUrls = [];
+
+  imageUrls.push(...getImages(imageDirectory))
+
+  res.status(200).send(imageUrls);
+})
 
 app.post('/api/process', async (req, res) => {
   const imgPath = req.body.image; // base64 png image string from react-webcam
