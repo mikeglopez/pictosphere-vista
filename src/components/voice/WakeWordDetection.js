@@ -15,7 +15,7 @@ export default function WakeWordDetection() {
     keywordDetection,
     // isLoaded,
     // isListening,
-    // error,
+    error,
     init,
     start,
     stop
@@ -23,15 +23,19 @@ export default function WakeWordDetection() {
   } = usePorcupine();
 
   const initEngine = useCallback(async () => {
-    await init(
-      `${process.env.REACT_APP_PICOVOICE_ACCESS_KEY}`,
-      {
-        base64: pictosphereKeywordModel,
-        label: 'PictoSphere'
-      },
-      { base64: modelParams }
-    );
-    start();
+    try {
+      await init(
+        `${process.env.REACT_APP_PICOVOICE_ACCESS_KEY}`,
+        {
+          base64: pictosphereKeywordModel,
+          label: 'PictoSphere'
+        },
+        { base64: modelParams }
+      );
+      start();
+    } catch (e) {
+      console.error('error in picovoice try/catch:', e);
+    }
   }, [init, start]);
 
   const beginCapture = useCallback(() => {
@@ -45,6 +49,12 @@ export default function WakeWordDetection() {
   useEffect(() => {
     initEngine();
   }, [initEngine]);
+
+  useEffect(() => {
+    if (error) {
+      console.log('picovoice error:', error)
+    }
+  }, [error])
 
   useEffect(() => {
     if (keywordDetection !== null) {
