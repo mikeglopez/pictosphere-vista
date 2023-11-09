@@ -167,3 +167,7 @@ html, .App {
   15%  {background-color: white;}
   85% {background-color: transparent;}
 }
+
+.meow {
+  color: red;
+}

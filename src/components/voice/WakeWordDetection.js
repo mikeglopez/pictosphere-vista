@@ -22,9 +22,9 @@ export default function WakeWordDetection() {
     // release
   } = usePorcupine();
 
-  const initEngine = useCallback(async () => {
-    try {
-      await init(
+  const initEngine = useCallback(() => {
+    new Promise(() => {
+      init(
         `${process.env.REACT_APP_PICOVOICE_ACCESS_KEY}`,
         {
           base64: pictosphereKeywordModel,
@@ -32,10 +32,11 @@ export default function WakeWordDetection() {
         },
         { base64: modelParams }
       );
-      start();
-    } catch (e) {
-      console.error('error in picovoice try/catch:', e);
-    }
+    }).then(() => {
+      start()
+    }).then(() => {
+      console.log('thing')
+    });
   }, [init, start]);
 
   const beginCapture = useCallback(() => {
@@ -62,6 +63,10 @@ export default function WakeWordDetection() {
       beginCapture();
     }
   }, [keywordDetection, beginCapture]);
+
+  useEffect(() => {
+    if (error) console.error('picovoice error:', error)
+  }, [error])
 
   return <></>;
 }

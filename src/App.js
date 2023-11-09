@@ -12,6 +12,7 @@ import { startCountdown } from './store/slices/timerSlice';
 const App = () => {
   const dispatch = useDispatch();
   const isPhotographing = useSelector(state => state.camera.isPhotographing);
+  const hasError = useSelector(state => state.error.hasError);
 
   const handleClick = () => {
     dispatch(toggleCamera());
@@ -24,7 +25,7 @@ const App = () => {
 
   return (
     <div className='App' onClick={handleClick}>
-      {!isPhotographing ? <Standby /> : <Camera />}
+      {!hasError && (!isPhotographing ? <Standby /> : <Camera />)}
     </div>
   );
 };
