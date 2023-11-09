@@ -49,7 +49,7 @@ const Slideshow = () => {
 
   return (
     <div className='slideshow-container'>
-      {images.length ? <img className='slideshow' src={images[currentImageIndex]} alt='pictoSphere capture' /> : ''}
+      {images.length ? <img className='slideshow' src={`http://10.0.0.88:3000${images[currentImageIndex]}`} alt='pictoSphere capture' /> : ''}
     </div>
   );
 };

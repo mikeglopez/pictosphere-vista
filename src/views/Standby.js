@@ -1,4 +1,4 @@
-import WakeWordDetection from '../components/voice/WakeWordDetection';
+// import WakeWordDetection from '../components/voice/WakeWordDetection';
 import Slideshow from '../components/UI/Slideshow';
 
 const Standby = () => {
@@ -8,7 +8,7 @@ const Standby = () => {
         <h1 className='standby-text'>Say "PictoSphere"</h1>
         <Slideshow />
         <h1 className='standby-text'>to take a photo!</h1>
-        <WakeWordDetection />
+        {/* <WakeWordDetection /> */}
       </div>
     </div>
   );
