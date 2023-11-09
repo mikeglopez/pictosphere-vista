@@ -7,12 +7,13 @@ import Camera from './views/Camera';
 
 const App = () => {
   const isPhotographing = useSelector(state => state.camera.isPhotographing);
+  const hasError = useSelector(state => state.error.hasError);
 
   axios.get('/api/images');
 
   return (
     <div className='App'>
-      {!isPhotographing ? <Standby /> : <Camera />}
+      {!hasError && (!isPhotographing ? <Standby /> : <Camera />)}
     </div>
   );
 };
