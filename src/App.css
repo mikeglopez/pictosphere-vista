@@ -9,6 +9,8 @@ html, .App {
   color: var(--charcoal);
 }
 
+/* .photo-album {} */
+
 .App-header {
   background-color: var(--charcoal);
   min-height: 100vh;
