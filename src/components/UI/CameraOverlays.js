@@ -20,7 +20,7 @@ const CameraOverlays = () => {
 
   return (
     <>
-      <Assistant hidden={assistantHidden} />
+      <Assistant version='a' hidden={assistantHidden} />
       {count > 0 && <Countdown />}
       <div id='camera-flash' className={(count === 0 && hasRun && isFlashing) ? 'flash' : ''} />
     </>

@@ -1,12 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
 
-const Slideshow = () => {
+const Slideshow = (props) => {
   const [images, setImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const shuffleImages = imagesArr => {
-    let currIndex = imagesArr.length,
+    let currIndex = imagesArr?.length,
       randIndex;
 
     while (currIndex > 0) {
@@ -23,13 +22,12 @@ const Slideshow = () => {
   };
 
   const getImages = useCallback(async () => {
-    const response = await axios.get('/api/images');
-    const photosArr = [...response.data];
+    const photosArr = props.photos;
 
     const shuffledPhotos = shuffleImages(photosArr);
 
     setImages(shuffledPhotos);
-  }, []);
+  }, [props.photos]);
 
   useEffect(() => {
     getImages();
@@ -49,7 +47,7 @@ const Slideshow = () => {
 
   return (
     <div className='slideshow-container'>
-      {images.length ? <img className='slideshow' src={`http://10.0.0.88:3000${images[currentImageIndex]}`} alt='pictoSphere capture' /> : ''}
+      <img className='slideshow' src={`http://10.0.0.88:3000${props.photos[currentImageIndex]}`} alt='PictoSphere Capture' />
     </div>
   );
 };
