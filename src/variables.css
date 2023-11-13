@@ -15,6 +15,11 @@
   --charcoal: #201f1e;
   --dark-sage: #599c76;
 
+  --cherry-red: #df0610;
+  --teal-green: #9ddba3;
+  --pale-yellow: #f6f9c0;
+  --dark-brown: #26120b;
+
   --oatmeal-lighter:  color-mix(in srgb,var(--oatmeal),#fff 75%);
 
   /* Text */
