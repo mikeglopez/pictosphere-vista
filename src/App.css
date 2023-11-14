@@ -1,6 +1,11 @@
 @import "./variables.css";
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Vina+Sans&display=swap');
+
+@font-face {
+  font-family: 'Britannic Bold';
+  src: url('../public/assets/fonts/BRITANIC.woff') format('woff');
+}
 
 html, .App {
   text-align: center;
@@ -11,6 +16,11 @@ html, .App {
 body {
   overflow: hidden;
   cursor: none;
+}
+
+/* Uncomment to hide random proxy errors when going BACK from viewing a gallery image */
+body > iframe { 
+  display: none 
 }
 
 .assistant {
@@ -214,4 +224,70 @@ body {
   0%   {background-color: transparent;}
   15%  {background-color: var(--white);}
   85% {background-color: transparent;}
+}
+
+.photo-album {
+  font-family: 'Britannic Bold', Arial, Helvetica, sans-serif;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--teal-green);
+}
+
+.photo-album-header {
+}
+
+.logo-pictosphere {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.5rem;
+  color: var(--cherry-red);
+  margin: 1rem 0 0 0;
+}
+
+.logo-vista {
+  font-family: 'Britannic Bold', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  color: var(--dark-brown);
+  margin-top: 0;
+  text-transform: uppercase;
+}
+
+.photo-album-gallery {
+  flex: 1;
+  background-image: url("../public/assets/images/standby/bg-stripes.png");
+  background-size: 150%;
+  background-position: center;
+  overflow: auto;
+  text-transform: uppercase;
+  border-radius: 40px 40px 0 0;
+  border: 4px solid var(--pale-yellow);
+  box-shadow: inset 0 0 25px 25px hsla(120, 32%, 59%, 70%);
+}
+
+.enhance-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toggle-text {
+  margin: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.gallery-instructions {
+  font-size: 1.2rem;
+  color: var(--cherry-red-darker);
+  font-family: 'Vina Sans', sans-serif;
+  margin-top: 0;
+}
+
+.gallery-photo {
+  margin: 1rem;
+  margin-top: 0;
+  border-radius: 40px;
+  border: 4px solid var(--pale-yellow);
+  width: 90%;
+  height: auto;
 }

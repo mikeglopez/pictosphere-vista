@@ -9,6 +9,7 @@ import Camera from './views/Camera';
 
 const App = () => {
   const isPhotographing = useSelector(state => state.camera.isPhotographing);
+  const hasError = useSelector(state => state.error.hasError);
 
   useEffect(() => {
     const preventRightClick = (event) => {
@@ -26,7 +27,7 @@ const App = () => {
 
   return (
     <div className='App'>
-      {!isPhotographing ? <Standby /> : <Camera />}
+    {!hasError && (!isPhotographing ? <Standby /> : <Camera />)}
     </div>
   );
 };

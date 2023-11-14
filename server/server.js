@@ -12,7 +12,8 @@ const port = 5000;
 app.use(bodyParser.json({ limit: '10mb' }));
 
 app.get('/api/images', (req, res) => {
-  const imageDirectory = 'public/captures/original';
+  const process = req.query.process ? req.query.process : 'original';
+  const imageDirectory = `public/captures/${process}`;
   const imageUrls = [];
 
   imageUrls.push(...getImages(imageDirectory))

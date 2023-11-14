@@ -16,6 +16,7 @@
   --dark-sage: #599c76;
 
   --cherry-red: #df0610;
+  --cherry-red-darker:  color-mix(in srgb,var(--cherry-red),#000 60%);
   --teal-green: #9ddba3;
   --pale-yellow: #f6f9c0;
   --dark-brown: #26120b;
