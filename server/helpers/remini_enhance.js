@@ -65,11 +65,11 @@ const reminiEnhance = async imgPath => {
         const processedImagePath = `${processedImagePathBase}/${processedImageName}.png`;
 
         await exportFile(processedImagePath, processedImgSrc, 'PROCESSED');
-        process.exit(0);
+        return;
       } else {
         if (getTaskResponse.data.status !== 'processing') {
           console.error('Found illegal status: ' + getTaskResponse.data.status);
-          process.exit(1);
+          return;
         }
         console.log('Processing, sleeping 2 seconds ...');
         await new Promise(resolve => setTimeout(resolve, 2000));

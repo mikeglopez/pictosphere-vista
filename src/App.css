@@ -1,5 +1,6 @@
 @import "./variables.css";
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Vina+Sans&display=swap');
 
 @font-face {
   font-family: 'Britannic Bold';
@@ -268,11 +269,23 @@ body > iframe {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.toggle-text {
   margin: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.gallery-instructions {
+  font-size: 1.2rem;
+  color: var(--cherry-red-darker);
+  font-family: 'Vina Sans', sans-serif;
+  margin-top: 0;
 }
 
 .gallery-photo {
   margin: 1rem;
+  margin-top: 0;
   border-radius: 40px;
   border: 4px solid var(--pale-yellow);
   width: 90%;
