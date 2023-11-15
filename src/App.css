@@ -120,10 +120,26 @@ body > iframe {
   width: 100%;
   position: relative;
   top: 8%;
+  display: grid;
+  grid-template-columns: 2fr 6fr 2fr;
+  gap: .25rem;
+}
+
+.standby-side-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 4rem 0;
+}
+
+.standby-side-col .toggle-text {
+  margin: 1.5rem 1rem;
+  text-transform: uppercase;
+  font-size: 1rem;
 }
 
 .standby-instruction-text {
-  margin: 4rem;
+  margin: 4rem 0;
 }
 
 .standby-instruction {

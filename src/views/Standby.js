@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { ToggleSlider }  from 'react-toggle-slider';
 
 // import WakeWordDetection from '../components/voice/WakeWordDetection';
 import Slideshow from '../components/UI/Slideshow';
@@ -36,14 +37,26 @@ const Standby = () => {
       <div className='standby-bg'>
         <div className='standby-top'>
           <div className='standby-display'>
-            {images.length ? <Slideshow photos={images} /> : <div className='standby-instruction-text'>
-              <p className='standby-instruction'>
-                Press the Button
-              </p>
-              <p className='standby-instruction'>
-                To Take a Photo!
-              </p>
-            </div>}
+            <div className='standby-side-col'>
+              <p className='toggle-text'>Enhance Photos</p>
+              <ToggleSlider 
+                // onToggle={toggleEnhanced} 
+                // active={isEnhanced} 
+                barBackgroundColorActive='#599c76'
+              />
+            </div>
+            <div className='standby-center-col'>
+              {images.length ? <Slideshow photos={images} /> : <div className='standby-instruction-text'>
+                <p className='standby-instruction'>
+                  Press the Button
+                </p>
+                <p className='standby-instruction'>
+                  To Take a Photo!
+                </p>
+              </div>}
+            </div>
+            <div className='standby-side-col'>
+            </div>
           </div>
         </div>
         <div className='standby-bottom'>

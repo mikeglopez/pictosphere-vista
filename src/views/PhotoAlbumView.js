@@ -35,7 +35,6 @@ const PhotoAlbumView = () => {
           <ToggleSlider 
             onToggle={toggleEnhanced} 
             active={isEnhanced} 
-            // barBackgroundColor='#f6f9c0'
             barBackgroundColorActive='#599c76'
           />
           <p className='toggle-text'>AI Enhanced</p>
