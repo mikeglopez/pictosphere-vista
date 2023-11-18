@@ -43,7 +43,7 @@ const PhotoAlbumView = () => {
         <p className='gallery-instructions'>
           Press and hold, then select "save to photos"
         </p>
-        {images.map(img => (<a key={img} href={`http://10.0.0.88:3000${img}`}><img className='gallery-photo' src={`http://10.0.0.88:3000${img}`} alt={img}/></a>))}
+        {images.map(img => (<a key={img} href={img}><img className='gallery-photo' src={img} alt={img}/></a>))}
       </div>
     </div>
   )

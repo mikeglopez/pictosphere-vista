@@ -16,6 +16,9 @@ const Standby = () => {
 
   const handleClick = () => {
     dispatch(toggleCamera());
+    axios.post('/api/flux-capacitor/speed', { speed: 'fast' })
+      .then((response) => console.log(response.data))
+      .catch((error) => console.error('Error:', error));
     setTimeout(() => {
       dispatch(startCountdown());
     }, 2000);
