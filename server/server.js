@@ -1,15 +1,25 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const getImages = require('./helpers/get_images');
 const getCurrentDateTime = require('./helpers/date_formatter');
 const exportFile = require('./helpers/image_exporter');
 const reminiEnhance = require('./helpers/remini_enhance');
+const { startLightFluxing, setFluxSpeed, stopLightFluxing } = require('./helpers/flux_capacitor');
 
 const app = express();
 const port = 5000;
 
 app.use(bodyParser.json({ limit: '10mb' }));
+app.use(cors());
+
+// Server Logging for Testing
+// app.use((req, res, next) => {
+//   console.log(`${req.method} request received at ${req.url}`);
+//   next();
+// });
+
 
 app.get('/api/images', (req, res) => {
   const process = req.query.process ? req.query.process : 'original';
@@ -45,6 +55,31 @@ app.post('/api/process', async (req, res) => {
       console.error(err);
       res.status(500).send('An error occurred');
     });
+});
+
+// Flux Capacitor Endpoints
+
+app.post('/api/flux-capacitor/start', (req, res) => {
+  startLightFluxing();
+  res.status(200).send('Flux Capacitor Initialized');
+});
+
+app.post('/api/flux-capacitor/speed', (req, res) => {
+  const { speed } = req.body;
+
+  if (speed === 'fast') {
+    setFluxSpeed(80);
+  } else {
+    setFluxSpeed(200); // Default speed
+  }
+
+  res.send({ message: 'Flux speed updated successfully.' });
+});
+
+
+app.post('/api/flux-capacitor/stop', (req, res) => {
+  stopLightFluxing();
+  res.status(200).send('Flux Capacitor Stopped');
 });
 
 app.listen(port, () => {

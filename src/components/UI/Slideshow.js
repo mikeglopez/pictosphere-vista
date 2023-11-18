@@ -47,7 +47,7 @@ const Slideshow = (props) => {
 
   return (
     <div className='slideshow-container'>
-      <img className='slideshow' src={`http://10.0.0.88:3000${props.photos[currentImageIndex]}`} alt='PictoSphere Capture' />
+      <img className='slideshow' src={props.photos[currentImageIndex]} alt='PictoSphere Capture' />
     </div>
   );
 };

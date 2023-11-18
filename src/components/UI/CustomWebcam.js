@@ -16,7 +16,6 @@ const CustomWebcam = () => {
   const webcamRef = useRef(null);
   const displayImageTime = 10; // in seconds
 
-
   const processImage = async (imgSrc) => {
     const response = await axios.post('/api/process', {
       image: imgSrc,
@@ -30,6 +29,9 @@ const CustomWebcam = () => {
   useEffect(() => {
     if (image) {
       processImage(image); // Save the captured image and enhance, if toggled true
+      axios.post('/api/flux-capacitor/speed', { speed: 'slow' })
+          .then((response) => console.log(response.data))
+          .catch((error) => console.error('Error:', error));
 
       setTimeout(() => {
         setImage(null);
