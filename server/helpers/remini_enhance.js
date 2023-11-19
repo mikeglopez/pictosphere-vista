@@ -1,3 +1,4 @@
+require('dotenv').config('../../.env');
 const fs = require('fs').promises;
 const axios = require('axios');
 const crypto = require('crypto');
