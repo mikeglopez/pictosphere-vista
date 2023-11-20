@@ -1,7 +1,8 @@
+process.env.NODE_ENV = 'production';
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path');
 
 const getImages = require('./helpers/get_images');
 const getCurrentDateTime = require('./helpers/date_formatter');
@@ -14,22 +15,6 @@ const port = 5000;
 
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(cors());
-
-const _dirname = path.dirname('');
-const buildPath = path.join(_dirname, '../build');
-
-app.use(express.static(buildPath));
-
-app.get('/*', (req, res) => {
-  res.sendFile(
-    path.join(_dirname, '../build/index.html'),
-    (err) => {
-      if (err) {
-        res.status(500).send(err);
-      }
-    }
-  )
-})
 
 // Server Logging for Testing
 // app.use((req, res, next) => {
