@@ -1,7 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-
-import { RouterProvider } from "react-router-dom";
+import ReactDOM from 'react-dom/client'; // Use react-dom/client here
 import { Provider } from 'react-redux';
 import store from './store/store';
 
@@ -14,7 +12,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      {router}
     </Provider>
   </React.StrictMode>
 );

@@ -1,17 +1,17 @@
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
-import App from "../App";
-import PhotoAlbumView from "../views/PhotoAlbumView";
-import ErrorView from "../views/ErrorView";
+import App from '../App';
+import PhotoAlbumView from '../views/PhotoAlbumView';
+import ErrorView from '../views/ErrorView';
 
 const router = (
-  <HashRouter>
+  <Router>
     <Routes>
-      <Route path="/" element={<App />} caseSensitive />
-      <Route path="/album" element={<PhotoAlbumView />} caseSensitive />
-      <Route path="*" element={<ErrorView />} caseSensitive />
+      <Route path="/" element={<App />} />
+      <Route path="/album" element={<PhotoAlbumView />} />
+      <Route path="*" element={<ErrorView />} />
     </Routes>
-  </HashRouter>
+  </Router>
 );
 
 export default router;
