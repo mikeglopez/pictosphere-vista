@@ -5,9 +5,10 @@ import { ToggleSlider }  from "react-toggle-slider";
 const PhotoAlbumView = () => {
   const [images, setImages] = useState([]);
   const [isEnhanced, setIsEnhanced] = useState(true);
+  const apiUrl = process.env.REACT_APP_EC2_INSTANCE;
 
   const getImages = useCallback(async () => {
-    const response = await axios.get('/api/images', {
+    const response = await axios.get(`http://${apiUrl}/api/images`, {
       params: {
         process: isEnhanced ? 'processed' : 'original',
       },
@@ -32,9 +33,9 @@ const PhotoAlbumView = () => {
       <div className='photo-album-gallery'>
         <div className='enhance-toggle'>
           <p className='toggle-text'>Original</p>
-          <ToggleSlider 
-            onToggle={toggleEnhanced} 
-            active={isEnhanced} 
+          <ToggleSlider
+            onToggle={toggleEnhanced}
+            active={isEnhanced}
             // barBackgroundColor='#f6f9c0'
             barBackgroundColorActive='#599c76'
           />

@@ -10,6 +10,7 @@ const CustomWebcam = () => {
   const [image, setImage] = useState(null);
   // const [processedImage, setProcessedImage] = useState(null);
   const { count, hasRun } = useSelector(state => state.timer);
+  const apiUrl = process.env.REACT_APP_EC2_INSTANCE;
 
   const dispatch = useDispatch();
 
@@ -17,7 +18,7 @@ const CustomWebcam = () => {
   const displayImageTime = 10; // in seconds
 
   const processImage = async (imgSrc) => {
-    const response = await axios.post('/api/process', {
+    const response = await axios.post(`http://${apiUrl}/api/process`, {
       image: imgSrc,
       enhance: false // !: Set this back to true to enhance the photo
     });
@@ -29,7 +30,7 @@ const CustomWebcam = () => {
   useEffect(() => {
     if (image) {
       processImage(image); // Save the captured image and enhance, if toggled true
-      axios.post('/api/flux-capacitor/speed', { speed: 'slow' })
+      axios.post(`http://${apiUrl}/api/flux-capacitor/speed`, { speed: 'slow' })
           .then((response) => console.log(response.data))
           .catch((error) => console.error('Error:', error));
 

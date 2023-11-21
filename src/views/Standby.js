@@ -12,13 +12,14 @@ import { startCountdown } from '../store/slices/timerSlice';
 
 const Standby = () => {
   const dispatch = useDispatch();
+  const apiUrl = process.env.REACT_APP_EC2_INSTANCE;
 
   const [images, setImages] = useState([]);
   const currentURL = window.location.href;
 
   const handleClick = () => {
     dispatch(toggleCamera());
-    axios.post('/api/flux-capacitor/speed', { speed: 'fast' })
+    axios.post(`http://${apiUrl}/api/flux-capacitor/speed`, { speed: 'fast' })
       .then((response) => console.log(response.data))
       .catch((error) => console.error('Error:', error));
     setTimeout(() => {
@@ -27,7 +28,7 @@ const Standby = () => {
   }
 
   const getImages = useCallback(async () => {
-    const response = await axios.get('/api/images');
+    const response = await axios.get(`http://${apiUrl}/api/images`);
     setImages([...response.data]);
   }, []);
 

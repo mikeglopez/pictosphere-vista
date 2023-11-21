@@ -10,9 +10,10 @@ const App = () => {
   const dispatch = useDispatch();
   const isPhotographing = useSelector(state => state.camera.isPhotographing);
   const hasError = useSelector(state => state.error.hasError);
+  const apiUrl = process.env.REACT_APP_EC2_INSTANCE;
 
   useEffect(() => {
-    axios.post('/api/flux-capacitor/start')
+    axios.post(`http://${apiUrl}/api/flux-capacitor/start`)
       .then(response => {
       })
       .catch(error => {
@@ -27,16 +28,16 @@ const App = () => {
 
     return () => {
       document.removeEventListener('contextmenu', preventRightClick);
-      axios.post('/api/flux-capacitor/stop')
+      axios.post(`http://${apiUrl}/api/flux-capacitor/stop`)
         .then(response => {
         })
         .catch(error => {
           console.error('Error stopping light fluxing:', error);
         })
     };
-  }, [dispatch]);
+  }, [dispatch, apiUrl]);
 
-  axios.get('/api/images');
+  axios.get(`http://${apiUrl}/api/images`);
 
   return (
     <div className='App'>
