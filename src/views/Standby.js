@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import QRCodeCanvas from 'qrcode.react';
 
 // import WakeWordDetection from '../components/voice/WakeWordDetection';
 import Slideshow from '../components/UI/Slideshow';
@@ -13,6 +14,7 @@ const Standby = () => {
   const dispatch = useDispatch();
 
   const [images, setImages] = useState([]);
+  const currentURL = window.location.href;
 
   const handleClick = () => {
     dispatch(toggleCamera());
@@ -61,7 +63,8 @@ const Standby = () => {
               <p>Your Photos!</p>
             </div>
             <div className='qr-code'>
-              <img src='assets/images/standby/album-qr.png' alt='QR Code to PhotoAlbum' />
+              {/*<img src='assets/images/standby/album-qr.png' alt='QR Code to PhotoAlbum' />*/}
+              <QRCodeCanvas size='180' value={`${currentURL}#/album`}/>
             </div>
           </div>
         </div>

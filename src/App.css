@@ -146,14 +146,21 @@ body > iframe {
   margin: 0;
 }
 
-.qr-code img {
+.qr-code {
+  background-color: var(--white);
+  width: 70px;
+  height: 70px;
+  border-radius: 13px;
+  padding: .5em;
   align-self: flex-end;
+  margin-right: 1.8em;
+  margin-top: .5em;
+}
+
+.qr-code canvas {
   width: 70px;
   height: 70px;
   object-fit: cover;
-  padding: .5em;
-  border-radius: 18px;
-  margin-right: 1.5em;
 }
 /* 800x480 PictoSphere Vista Screen Resolution */
 
