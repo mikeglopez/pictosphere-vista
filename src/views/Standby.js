@@ -15,13 +15,15 @@ const Standby = () => {
   const apiUrl = process.env.REACT_APP_EC2_INSTANCE;
 
   const [images, setImages] = useState([]);
-  const currentURL = window.location.href;
+  // const currentURL = window.location.href;
 
   const handleClick = () => {
     dispatch(toggleCamera());
-    axios.post(`http://${apiUrl}/api/flux-capacitor/speed`, { speed: 'fast' })
-      .then((response) => console.log(response.data))
-      .catch((error) => console.error('Error:', error));
+    if (process.env.NODE_ENV === 'development') {
+      axios.post('http://localhost:5000/api/flux-capacitor/speed', { speed: 'fast' })
+        .then((response) => console.log(response.data))
+        .catch((error) => console.error('Error:', error));
+    };
     setTimeout(() => {
       dispatch(startCountdown());
     }, 2000);
@@ -30,7 +32,7 @@ const Standby = () => {
   const getImages = useCallback(async () => {
     const response = await axios.get(`http://${apiUrl}/api/images`);
     setImages([...response.data]);
-  }, []);
+  }, [apiUrl]);
 
   useEffect(() => {
     getImages();
@@ -65,7 +67,8 @@ const Standby = () => {
             </div>
             <div className='qr-code'>
               {/*<img src='assets/images/standby/album-qr.png' alt='QR Code to PhotoAlbum' />*/}
-              <QRCodeCanvas size='180' value={`${currentURL}#/album`}/>
+              {/* <QRCodeCanvas size='180' value={`${currentURL}#/album`}/> */}
+              <QRCodeCanvas size='180' value={`${process.env.REACT_APP_S3}#/album`}/>
             </div>
           </div>
         </div>

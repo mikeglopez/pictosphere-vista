@@ -13,17 +13,17 @@ const outputContentType = 'image/png';
 const timeout = 60000;
 const baseUrl = 'https://developer.remini.ai/api';
 
-const processedImagePathBase = `${__dirname}/../../public/captures/processed`;
-let processedImageName;
-
 const getImageMd5Content = async imgPath => {
   const content = await fs.readFile(imgPath);
   const md5Hash = crypto.createHash('md5').update(content).digest('base64');
   return { md5Hash, content };
 };
 
-const reminiEnhance = async imgPath => {
-  const { md5Hash, content } = await getImageMd5Content(imgPath);
+const reminiEnhance = async (originalImagePathBase, imgName) => {
+  const originalImagePath = `${originalImagePathBase}/${imgName}.png`
+  const processedImagePathBase = `${__dirname}/../../public/captures/processed`;
+
+  const { md5Hash, content } = await getImageMd5Content(originalImagePath);
   const client = axios.create({
     baseURL: baseUrl,
     headers: { Authorization: `Bearer ${reminiAPI}` },
@@ -62,10 +62,9 @@ const reminiEnhance = async imgPath => {
         console.log('Processing completed.');
         console.log('Output url: ' + processedImgSrc);
 
-        processedImageName = getCurrentDateTime();
-        const processedImagePath = `${processedImagePathBase}/${processedImageName}.png`;
+        const processedImageName = getCurrentDateTime();
 
-        await exportFile(processedImagePath, processedImgSrc, 'PROCESSED');
+        await exportFile(processedImagePathBase, processedImgSrc, processedImageName, 'PROCESSED');
         return;
       } else {
         if (getTaskResponse.data.status !== 'processing') {

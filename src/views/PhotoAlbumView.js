@@ -14,7 +14,7 @@ const PhotoAlbumView = () => {
       },
     });
     setImages([...response.data]);
-  }, [isEnhanced]);
+  }, [isEnhanced, apiUrl]);
 
   const toggleEnhanced = () => {
     setIsEnhanced(prevState => !prevState);

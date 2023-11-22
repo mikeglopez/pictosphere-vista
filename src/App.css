@@ -19,8 +19,8 @@ body {
 }
 
 /* Uncomment to hide random proxy errors when going BACK from viewing a gallery image */
-body > iframe { 
-  display: none 
+body > iframe {
+  display: none
 }
 
 .assistant {
@@ -148,18 +148,18 @@ body > iframe {
 
 .qr-code {
   background-color: var(--white);
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border-radius: 13px;
   padding: .5em;
   align-self: flex-end;
-  margin-right: 1.8em;
+  margin-right: 2em;
   margin-top: .5em;
 }
 
 .qr-code canvas {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
 }
 /* 800x480 PictoSphere Vista Screen Resolution */

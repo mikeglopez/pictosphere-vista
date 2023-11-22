@@ -17,22 +17,28 @@ const CustomWebcam = () => {
   const webcamRef = useRef(null);
   const displayImageTime = 10; // in seconds
 
-  const processImage = async (imgSrc) => {
-    const response = await axios.post(`http://${apiUrl}/api/process`, {
-      image: imgSrc,
-      enhance: false // !: Set this back to true to enhance the photo
-    });
+  const processImage = useCallback(async (imgSrc) => {
+    try {
+      const response = await axios.post(`http://${apiUrl}/api/process`, {
+        image: imgSrc,
+        enhance: false // !: Set this back to true to enhance the photo
+      });
 
-    // setProcessedImage(response.data) // *: Maybe use this later to build the photo gallery
-  }
+      // setProcessedImage(response.data) // *: Maybe use this later to build the photo gallery
+    } catch (err) {
+      console.error('Error processing image:', err);
+    }
+  }, [apiUrl]);
 
   // Take the picture and return to Standby
   useEffect(() => {
     if (image) {
       processImage(image); // Save the captured image and enhance, if toggled true
-      axios.post(`http://${apiUrl}/api/flux-capacitor/speed`, { speed: 'slow' })
-          .then((response) => console.log(response.data))
-          .catch((error) => console.error('Error:', error));
+      if (process.env.NODE_ENV === 'development') {
+        axios.post('http://localhost:5000/api/flux-capacitor/speed', { speed: 'slow' })
+            .then((response) => console.log(response.data))
+            .catch((error) => console.error('Error:', error));
+      };
 
       setTimeout(() => {
         setImage(null);
@@ -40,7 +46,7 @@ const CustomWebcam = () => {
         dispatch(toggleCamera());
       }, (displayImageTime * 1000)); // Delete the image and return to standby after displayImageTime in milliseconds
     }
-  }, [ image, dispatch ]);
+  }, [ image, dispatch, processImage ]);
 
   // Capture the photo
   const capture = useCallback(() => {

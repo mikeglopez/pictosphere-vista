@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'production';
+require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -8,7 +8,6 @@ const getImages = require('./helpers/get_images');
 const getCurrentDateTime = require('./helpers/date_formatter');
 const exportFile = require('./helpers/image_exporter');
 const reminiEnhance = require('./helpers/remini_enhance');
-const { startLightFluxing, setFluxSpeed, stopLightFluxing } = require('./helpers/flux_capacitor');
 
 const app = express();
 const port = 5000;
@@ -23,14 +22,16 @@ app.use(cors());
 // });
 
 
-app.get('/api/images', (req, res) => {
+app.get('/api/images', async (req, res) => {
   const process = req.query.process ? req.query.process : 'original';
-  const imageDirectory = `public/captures/${process}`;
-  const imageUrls = [];
 
-  imageUrls.push(...getImages(imageDirectory))
-
-  res.status(200).send(imageUrls);
+  try {
+    const imageUrls = await getImages(process);
+    res.status(200).send(imageUrls);
+  } catch (err) {
+    console.error(`Error getting images: ${err}`)
+    res.status(500).send(`Error getting images: ${err}`);
+  }
 })
 
 app.post('/api/process', async (req, res) => {
@@ -38,51 +39,52 @@ app.post('/api/process', async (req, res) => {
   const toBeEnhanced = req.body.enhance; // boolean determining whether to process with Remini or not
 
   // Generate the file name and save path for the captured photo
+  const imgName = getCurrentDateTime();
   const originalImagePathBase = `${__dirname}/../public/captures/original`;
-  const originalImageName = getCurrentDateTime();
-  const originalImagePath = `${originalImagePathBase}/${originalImageName}.png`;
 
-  // Download the captured photo
-  exportFile(originalImagePath, imgPath, 'ORIGINAL')
-  // Enhance the captured photo with Remini AI
-    .then(imagePath => {
-      if (toBeEnhanced) { // Only send to Remini for AI enhancing if true
-        return reminiEnhance(originalImagePath);
-      }
-    })
-    .then(() => {
-      res.status(200).send('Success!!!');
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).send('An error occurred');
-    });
+  try {
+    // Call exportFile to save the original image
+    await exportFile(originalImagePathBase, imgPath, imgName, 'ORIGINAL');
+
+    if (toBeEnhanced) {
+      // Call reminiEnhance to process the image
+      await reminiEnhance(originalImagePathBase, imgName);
+    }
+
+    res.status(200).send('Success!!!');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('An error occurred');
+  }
 });
 
 // Flux Capacitor Endpoints
 
-app.post('/api/flux-capacitor/start', (req, res) => {
-  startLightFluxing();
-  res.status(200).send('Flux Capacitor Initialized');
-});
+if (process.env.NODE_ENV === 'development') {
+  const { startLightFluxing, setFluxSpeed, stopLightFluxing } = require('./helpers/flux_capacitor');
 
-app.post('/api/flux-capacitor/speed', (req, res) => {
-  const { speed } = req.body;
+  app.post('/api/flux-capacitor/start', (req, res) => {
+    startLightFluxing();
+    res.status(200).send('Flux Capacitor Initialized');
+  });
 
-  if (speed === 'fast') {
-    setFluxSpeed(80);
-  } else {
-    setFluxSpeed(200); // Default speed
-  }
+  app.post('/api/flux-capacitor/speed', (req, res) => {
+    const { speed } = req.body;
 
-  res.send({ message: 'Flux speed updated successfully.' });
-});
+    if (speed === 'fast') {
+      setFluxSpeed(80);
+    } else {
+      setFluxSpeed(200); // Default speed
+    }
 
+    res.send({ message: 'Flux speed updated successfully.' });
+  });
 
-app.post('/api/flux-capacitor/stop', (req, res) => {
-  stopLightFluxing();
-  res.status(200).send('Flux Capacitor Stopped');
-});
+  app.post('/api/flux-capacitor/stop', (req, res) => {
+    stopLightFluxing();
+    res.status(200).send('Flux Capacitor Stopped');
+  });
+};
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

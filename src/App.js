@@ -13,12 +13,14 @@ const App = () => {
   const apiUrl = process.env.REACT_APP_EC2_INSTANCE;
 
   useEffect(() => {
-    axios.post(`http://${apiUrl}/api/flux-capacitor/start`)
-      .then(response => {
-      })
-      .catch(error => {
-        console.error('Error starting light fluxing:', error);
-      });
+    if (process.env.NODE_ENV === 'development') {
+      axios.post('http://localhost:5000/api/flux-capacitor/start')
+        .then(response => {
+        })
+        .catch(error => {
+          console.error('Error starting light fluxing:', error);
+        });
+    }
 
     const preventRightClick = (event) => {
       event.preventDefault();
@@ -28,14 +30,16 @@ const App = () => {
 
     return () => {
       document.removeEventListener('contextmenu', preventRightClick);
-      axios.post(`http://${apiUrl}/api/flux-capacitor/stop`)
-        .then(response => {
-        })
-        .catch(error => {
-          console.error('Error stopping light fluxing:', error);
-        })
+      if (process.env.NODE_ENV === 'development') {
+        axios.post('http://localhost:5000/api/flux-capacitor/stop')
+          .then(response => {
+          })
+          .catch(error => {
+            console.error('Error stopping light fluxing:', error);
+          })
+      };
     };
-  }, [dispatch, apiUrl]);
+  }, [dispatch]);
 
   axios.get(`http://${apiUrl}/api/images`);
 
