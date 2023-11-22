@@ -14,6 +14,8 @@ SSH into EC2 and cd into 'pictosphere-vista'
 Install dependencies on EC2 by running 'npm install --no-optional --no-audit --legacy-peer-deps'
 Set environment variables per .env.example (some or all may need to be set on the system if not working via .env file)
 Save EC2 instance public ipv4 address to REACT_APP_EC2_INSTANCE environment variable
+Run 'npm run build' to build the React app with the EC2 API URL
+Upload the 'build' directory's contents to S3
 Run 'pm2 start server/server.js' on EC2 to start the Express server backend
 Install dependencies by running 'npm install' locally
 Run 'npm start' to start the local React app frontend
