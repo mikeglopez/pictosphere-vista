@@ -44,7 +44,7 @@ const App = () => {
   axios.get(`http://${apiUrl}/api/images`);
 
   return (
-    <div className='App'>
+    <div className='App crt'>
     {!hasError && (!isPhotographing ? <Standby /> : <Camera />)}
     </div>
   );
