@@ -23,7 +23,7 @@ app.use(cors());
 
 
 app.get('/api/images', async (req, res) => {
-  const process = req.query.process ? req.query.process : 'original';
+  const process = req.query.process ? req.query.process : 'processed'; // Display the enhanced images on the slideshow
 
   try {
     const imageUrls = await getImages(process);

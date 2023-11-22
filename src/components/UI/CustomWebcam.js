@@ -21,7 +21,7 @@ const CustomWebcam = () => {
     try {
       const response = await axios.post(`http://${apiUrl}/api/process`, {
         image: imgSrc,
-        enhance: false // !: Set this back to true to enhance the photo
+        enhance: true // !: Set this back to true to enhance the photo
       });
 
       // setProcessedImage(response.data) // *: Maybe use this later to build the photo gallery
