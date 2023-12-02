@@ -2,6 +2,7 @@ require('dotenv').config('../../.env');
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const axios = require('axios');
+const Jimp = require('jimp');
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -11,55 +12,55 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-const exportFile = (savePathBase, imgData, imgName, version) => {
-  return new Promise(async (resolve, reject) => {
+const exportFile = async (savePathBase, imgData, imgName, version) => {
+  try {
     let base64Data;
 
     if (version === 'ORIGINAL') {
       // For downloading the original captured image
       base64Data = imgData.replace(/^data:image\/png;base64,/, '');
-    } else if(version === 'PROCESSED') {
+    } else if (version === 'PROCESSED') {
       // Download the image from the Remini URL
       try {
         const response = await axios.get(imgData, { responseType: 'arraybuffer' });
         base64Data = Buffer.from(response.data, 'binary').toString('base64');
       } catch (err) {
         console.error(`Error downloading the processed image: ${err}`);
-        reject(`Error downloading the processed image: ${err}`);
-        return;
+        throw err;
       }
     }
 
     const savePath = `${savePathBase}/${imgName}.png`;
 
+    // Use Jimp to open the image
+    const image = await Jimp.read(Buffer.from(base64Data, 'base64'));
+
+    if (version === 'ORIGINAL') {
+      // Flip the image horizontally for the 'ORIGINAL' version
+      image.flip(true, false);
+    }
+
     // Save the image to the predetermined local location
-    fs.writeFile(savePath, base64Data, 'base64', err => {
-      if (err) {
-        console.error(`Error saving the ${version} image:`, err);
-        reject(`Error saving the ${version} image: ${err}`);
-      } else {
-        console.log(`${version} image saved locally successfully.`);
+    await image.writeAsync(savePath);
 
-        // Save the image to S3
-        const params = {
-          Bucket: 'pictosphere-prod',
-          Key: `captures/${version.toLowerCase()}/${imgName}.png`,
-          Body: fs.createReadStream(savePath),
-          ContentType: 'image/png'
-        };
+    console.log(`${version} image saved locally successfully.`);
 
-        s3.upload(params, (s3Err, data) => {
-          if (s3Err) {
-            console.error(`Error uploading ${version} image to S3: ${s3Err}`);
-            reject(`Error uploading ${version} image to S3: ${s3Err}`);
-          } else {
-            console.log(`${version} image uploaded to S3 successfully. S3 URL: ${data.Location}`);
-            resolve(savePath);
-          }
-        });
-      }
-    });
-  });
+    // Save the image to S3
+    const params = {
+      Bucket: 'pictosphere-prod',
+      Key: `captures/${version.toLowerCase()}/${imgName}.png`,
+      Body: fs.createReadStream(savePath),
+      ContentType: 'image/png'
+    };
+
+    const data = await s3.upload(params).promise();
+    console.log(`${version} image uploaded to S3 successfully. S3 URL: ${data.Location}`);
+
+    return savePath;
+  } catch (err) {
+    console.error(`Error processing the image: ${err}`);
+    throw err;
+  }
 };
 
 module.exports = exportFile;
