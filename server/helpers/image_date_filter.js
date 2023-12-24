@@ -23,8 +23,8 @@ const imageDateFilter = (fileName) => {
   const now = new Date();
   const timeDifference = now - captureDate; // in ms
 
-  // Check if the image was captured within 18 hours in ms
-  return timeDifference <= 18 * 60 * 60 * 1000;
+  // Check if the image was captured within 48 hours in ms
+  return timeDifference <= 48 * 60 * 60 * 1000;
 };
 
 module.exports = imageDateFilter;

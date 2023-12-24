@@ -26,7 +26,10 @@ const getImages = async (version) => {
     }).promise();
     const imageObjects = s3Objects.Contents.filter(obj => obj.Key.endsWith('.png'));
 
+    //  Filter the images based on date
     const filteredImages = imageObjects.filter(obj => imageDateFilter(getFileName(obj.Key)));
+    // Don't filter the images
+    // const filteredImages = imageObjects.filter(obj => getFileName(obj.Key));
 
     return filteredImages.map(obj => `${process.env.REACT_APP_S3}/${obj.Key}`);
   } catch (err) {
