@@ -4,7 +4,7 @@ import { ToggleSlider }  from "react-toggle-slider";
 
 const PhotoAlbumView = () => {
   const [images, setImages] = useState([]);
-  const [isEnhanced, setIsEnhanced] = useState(true);
+  const [isEnhanced, setIsEnhanced] = useState(false);
   const apiUrl = process.env.REACT_APP_EC2_INSTANCE;
 
   const getImages = useCallback(async () => {

@@ -209,8 +209,8 @@ body > iframe {
 }
 
 .countdown-timer {
-  font-size: 36rem;
-  color: rgba(255, 255, 255, 0.35);
+  font-size: 20rem;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .flash {
