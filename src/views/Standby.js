@@ -30,7 +30,11 @@ const Standby = () => {
   }
 
   const getImages = useCallback(async () => {
-    const response = await axios.get(`http://${apiUrl}/api/images`);
+    const response = await axios.get(`http://${apiUrl}/api/images`, {
+      params: {
+        process: 'original',
+      },
+    });
     setImages([...response.data]);
   }, [apiUrl]);
 
